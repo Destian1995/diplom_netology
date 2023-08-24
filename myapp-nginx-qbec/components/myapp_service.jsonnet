@@ -7,12 +7,12 @@ local params = p.components.myapp_service;
   "apiVersion": "v1",
   "kind": "Service",
   "metadata": {
-    "name": "myapp-nginx",
+    "name": "nginx-app",
   },
   "spec": {
     "type": "NodePort",
     "selector": {
-      "app.kubernetes.io/name": "myapp-nginx"
+      "app.kubernetes.io/name": "nginx-app"
     },
     "ports": [
       {
