@@ -99,6 +99,9 @@ set -e
 export KUBECONFIG=~/.kube/$WORKSPACE/config
 kubectl create namespace monitoring
 kubectl create namespace myapp
+chmod 600 /home/vagrant/.kube/$WORKSPACE/config
+chown vagrant:vagrant /home/vagrant/.kube/$WORKSPACE/config
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm install prometheus --namespace monitoring prometheus-community/kube-prometheus-stack
 kubectl apply -f ./manifests/grafana-service-nodeport.yaml
 helm install netology ./helm/myapp -n myapp
