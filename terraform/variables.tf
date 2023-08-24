@@ -8,16 +8,8 @@ variable "YC_FOLDER_ID" {
 
 variable count_format { 
   default = "%01d" 
-} #server number format (-1, -2, etc.)
+} 
 
 variable count_offset { 
   default = 0 
-} #start numbering from X+1 (e.g. name-1 if '0', name-3 if '2', etc.)
-
-# variable "s3_access_key" {
-#   default = ""
-# }
-
-# variable "s3_secret_key" {
-#   default = ""
-# }
+} 
