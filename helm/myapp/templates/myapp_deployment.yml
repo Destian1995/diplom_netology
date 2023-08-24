@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-app-{{ .Release.Name }}
+  labels:
+    app.kubernetes.io/name: nginx-app
+spec:
+  replicas: {{ .Values.myapp_deployment.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: nginx-app
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: nginx-app
+    spec:
+      containers:
+      - name: nginx-app
+        image: {{ .Values.myapp_deployment.image.repository }}:{{ .Values.myapp_deployment.image.tag }}
+        resources:
+          requests:
+            memory: {{ .Values.myapp_deployment.resources.requests.memory }}
+            cpu: {{ .Values.myapp_deployment.resources.requests.cpu }}
+          limits:
+            memory: {{ .Values.myapp_deployment.resources.limits.memory }}
+            cpu: {{ .Values.myapp_deployment.resources.limits.cpu }}
+        ports:
+        - containerPort: 80

@@ -1,0 +1,117 @@
+---
+- name: install jenkins
+  hosts: all
+  vars:
+    workspace: "{{ lookup('env','WORKSPACE') }}"
+  become: true
+  tasks:
+  - name: create dir .kube
+    ansible.builtin.file:
+      path: /home/ubuntu/.kube
+      state: directory
+      mode: '0755'
+
+  - name: add key for repository
+    ansible.builtin.shell: |
+      curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee \ 
+      /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+
+  - name: add jenkins repository
+    ansible.builtin.shell: |
+      echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \ 
+      https://pkg.jenkins.io/debian-stable binary/ | sudo tee \ 
+      /etc/apt/sources.list.d/jenkins.list > /dev/null
+
+  - name: add docker repository
+    ansible.builtin.shell: |
+      sudo install -m 0755 -d /etc/apt/keyrings
+      curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+      sudo chmod a+r /etc/apt/keyrings/docker.gpg
+      sleep 10
+      echo \
+      "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+      "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+      sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+  - name: Update and upgrade apt packages
+    become: true
+    apt:
+      upgrade: yes
+      update_cache: yes
+  
+  - name: Install java
+    apt:
+      name: openjdk-11-jre
+      state: present
+
+  - name: Install jenkins
+    apt:
+      name: jenkins
+      state: latest
+  
+  - name: daemon-reload
+    ansible.builtin.systemd:
+      daemon_reload: yes
+
+  - name: Enable jenkins
+    ansible.builtin.systemd:
+      name: jenkins
+      enabled: true
+
+  - name: Start jenkins
+    ansible.builtin.systemd:
+      name: jenkins
+      state: started
+
+  - name: Copy config from local to jenkins
+    ansible.builtin.copy:
+      src: ~/.kube/{{ workspace }}/config
+      dest: /var/lib/jenkins/config
+      owner: jenkins
+      group: jenkins
+      mode: '0644'
+
+  - name: Install docker
+    apt:
+      name: 
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+        - docker-buildx-plugin
+        - docker-compose-plugin
+      state: present
+
+  - name: Enable docker
+    ansible.builtin.systemd:
+      name: docker
+      enabled: true
+
+  - name: Start docker
+    ansible.builtin.systemd:
+      name: docker
+      state: started
+
+  - name: adding  user ubuntu to group docker
+    user:
+      name: ubuntu
+      groups: docker
+      append: yes
+
+  - name: change docker.service
+    replace:
+      path: /lib/systemd/system/docker.service
+      regexp: 'ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock'
+      replace: 'ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:4243 -H unix:///var/run/docker.sock'
+
+  - name: install kubectl
+    ansible.builtin.shell: |
+      curl -LO https://dl.k8s.io/release/v1.25.0/bin/linux/amd64/kubectl
+      install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+      sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+
+  - name: install helm
+    ansible.builtin.shell: |
+      curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+      chmod 700 get_helm.sh
+      ./get_helm.sh
+

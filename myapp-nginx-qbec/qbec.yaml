@@ -1,0 +1,13 @@
+apiVersion: qbec.io/v1alpha1
+kind: App
+metadata:
+  name: nginx-app
+spec:
+  environments:
+    stage:
+      defaultNamespace: stage
+      server: https://k8s-server:6443
+    prod:
+      defaultNamespace: prod
+      server: https://k8s-server:6443
+  vars: {}

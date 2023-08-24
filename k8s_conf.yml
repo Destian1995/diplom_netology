@@ -1,0 +1,36 @@
+---
+- name: create dir for config
+  hosts: localhost
+  vars:
+    workspace: "{{ lookup('env','WORKSPACE') }}"
+  tasks:
+  - name: create dir for config
+    ansible.builtin.file:
+      path: ~/.kube/"{{ workspace }}"
+      state: directory
+      mode: '0755'
+
+- name: get conf
+  hosts: all
+  vars:
+    workspace: "{{ lookup('env','WORKSPACE') }}"
+  become: true
+  tasks:
+  - name: get conf
+    ansible.builtin.fetch:
+      src: /etc/kubernetes/admin.conf
+      dest: ~/.kube/{{ workspace }}/config
+      flat: yes
+
+- name: change local kube config
+  hosts: localhost
+  vars:
+    ip: "{{ lookup('env','IP_MASTER') }}"
+    workspace: "{{ lookup('env','WORKSPACE') }}"
+  tasks:
+  - name: change local kube config
+    replace:
+      path: ~/.kube/{{ workspace }}/config
+      regexp: '127.0.0.1'
+      replace: "{{ ip }}"
+

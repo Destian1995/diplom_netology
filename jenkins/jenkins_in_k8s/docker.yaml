@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: docker
+  labels:
+    app.kubernetes.io/name: docker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: docker
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: docker
+    spec:
+      containers:
+      - name: docker
+        image: docker:1.12.6-dind
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "20m"
+          limits:
+            memory: "1024Mi"
+            cpu: "40m"
+        securityContext: 
+            privileged: true 
+        volumeMounts: 
+          - name: docker-graph-storage 
+            mountPath: /var/lib/docker 
+      volumes: 
+        - name: docker-graph-storage 
+          emptyDir: {}    
+          #ports:
+          #- containerPort: 80
