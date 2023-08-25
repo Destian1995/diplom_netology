@@ -76,8 +76,8 @@ bash generate_inventory.sh > ../kubespray/inventory/mycluster/hosts.ini
 terraform output -json external_ip_address_vm_instance_master | jq -r '.[]' > ../inv
 terraform output -json external_ip_address_vm_instance_jenkins | jq -r '.[]' > ../inv2
 export IP_MASTER=$(terraform output -json external_ip_address_vm_instance_master | jq -r '.[]')
-export IP_WORKER0=$(terraform output -json internal_ip_address_vm_instance_worker | jq -j ".[]")
-export IP_WORKER1=$(terraform output -json internal_ip_address_vm_instance_worker | jq -j ".[]")
+export IP_WORKER0=$(terraform output -json internal_ip_address_vm_instance_worker | jq -j ".[1]")
+export IP_WORKER1=$(terraform output -json internal_ip_address_vm_instance_worker | jq -j ".[2]")
 scp /home/vagrant/.ssh/id_rsa* ubuntu@$IP_MASTER:~/.ssh/
 scp /home/vagrant/.ssh/id_rsa* ubuntu@$IP_WORKER0:~/.ssh/
 scp /home/vagrant/.ssh/id_rsa* ubuntu@$IP_WORKER1:~/.ssh/
