@@ -36,7 +36,7 @@ if ! command -v jq &> /dev/null; then
 fi
 if ! command -v netaddr &> /dev/null; then
     echo "netaddr не установлен. Установка..."
-    sudo -H pip install -y netaddr
+    sudo -H pip install  netaddr
 fi
 if ! command -v jmespath &> /dev/null; then
     echo "jmespath не установлен. Установка..."
@@ -44,7 +44,7 @@ if ! command -v jmespath &> /dev/null; then
 fi
 if ! command -v kubectl &> /dev/null; then
     echo "kubectl не установлена. Установка..."
-    sudo apt-get update && sudo apt-get install -y kubectl
+    sudo apt update && sudo apt install -y kubectl
 fi
 
 echo "Проверяем наличие Terraform и устанавливаем его при необходимости"
