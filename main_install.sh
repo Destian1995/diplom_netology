@@ -23,8 +23,8 @@ fi
 echo "Проверяем и устанавливаем pip для python3.9 и Ansible"
 if ! command -v pip3.9 &> /dev/null; then
     echo "Pip для Python 3.9 не установлен. Установка..."
-    curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-    python3.9 get-pip.py
+    alias python3=python3.9
+    sudo apt-get install python3-pip
 fi
 python3.9 -m pip install --user ansible-core==2.14.6
 
