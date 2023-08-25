@@ -26,10 +26,10 @@ if ! command -v pip3.9 &> /dev/null; then
     alias python3=python3.9
     sudo apt-get install python3-pip
 fi
-
 echo "Устанавливаем Ansible 2.14.6"
 python3.9 -m pip install --user ansible-core==2.14.6
 python3 -m pip install --user ansible
+export PATH="$PATH:/home/vagrant/.local/bin"
 
 echo "Проверяем и устанавливаем дополнительные утилиты, для успешного развертывания kubespray"
 if ! command -v jq &> /dev/null; then
