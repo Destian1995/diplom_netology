@@ -28,7 +28,6 @@ if ! command -v pip3.9 &> /dev/null; then
 fi
 echo "Устанавливаем Ansible 2.14.6"
 alias python3=python3.9
-python3 -m pip install --user ansible
 python3 -m pip install --user ansible-core==2.14.6
 export PATH="$PATH:/home/vagrant/.local/bin"
 
