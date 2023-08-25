@@ -32,7 +32,7 @@ python3.9 -m pip install --user ansible-core==2.14.6
 echo "Проверяем и устанавливаем дополнительные утилиты, для успешного развертывания kubespray"
 if ! command -v jq &> /dev/null; then
     echo "JQ не установлен. Установка..."
-    sudo apt install -y jq
+    sudo apt install jq
 fi
 if ! command -v netaddr &> /dev/null; then
     echo "netaddr не установлен. Установка..."
@@ -44,7 +44,7 @@ if ! command -v jmespath &> /dev/null; then
 fi
 if ! command -v kubectl &> /dev/null; then
     echo "kubectl не установлена. Установка..."
-    sudo apt update && sudo snap install -y kubectl
+    sudo apt update && sudo snap install kubectl
 fi
 
 echo "Проверяем наличие Terraform и устанавливаем его при необходимости"
