@@ -38,6 +38,8 @@ fi
 if ! command -v netaddr &> /dev/null; then
     echo "netaddr не установлен. Установка..."
     sudo -H pip install  netaddr
+    /usr/bin/python3.9 -m pip install netaddr
+
 fi
 if ! command -v jmespath &> /dev/null; then
     echo "jmespath не установлен. Установка..."
