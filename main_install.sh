@@ -76,6 +76,9 @@ bash generate_inventory.sh > ../kubespray/inventory/mycluster/hosts.ini
 terraform output -json external_ip_address_vm_instance_master | jq -r '.[]' > ../inv
 terraform output -json external_ip_address_vm_instance_jenkins | jq -r '.[]' > ../inv2
 export IP_MASTER=$(terraform output -json external_ip_address_vm_instance_master | jq -r '.[]')
+scp /home/vagrant/.ssh/id_rsa* ubuntu@$IP_MASTER:~/.ssh/
+scp /home/vagrant/.ssh/id_rsa* ubuntu@$IP_WORKER0:~/.ssh/
+scp /home/vagrant/.ssh/id_rsa* ubuntu@$IP_WORKER1:~/.ssh/
 
 echo "---------------------------------------------------------------"
 echo "Ждем пока инфраструктура оживет..."
