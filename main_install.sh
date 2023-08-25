@@ -5,6 +5,9 @@
 
 set -e
 
+
+echo "Копируем ssh ключик для доступа"
+cp /home/vagrant/.ssh/id_rsa.pub /home/vagrant/diplom_netology/terraform/
 echo "Скачиваем репозиторий kubespray, если его нет, для дальнейшего развертывания."
 if [ ! -d "kubespray" ]; then
     echo "Репозиторий kubespray не найден. Скачиваем..."
