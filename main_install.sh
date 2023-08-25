@@ -99,6 +99,8 @@ set -e
 
 echo "Настройка переменной KUBECONFIG на $KUBECONFIG"
 export KUBECONFIG=~/.kube/$WORKSPACE/config
+PORT_30030=30030
+PORT_30080=30080
 
 echo "Создание пространств имён"
 kubectl create namespace monitoring
@@ -119,3 +121,6 @@ kubectl apply -f ./manifests/grafana-service-nodeport.yaml
 echo "Установка Helm-чарта netology"
 helm install netology ./helm/myapp -n myapp
 
+echo "---------------------------------------------------------------"
+echo "Адрес для подключения к Grafana: $MASTER_IP:$PORT_30030"
+echo "Адрес для подключения к приложению: $MASTER_IP:$PORT_30080"
