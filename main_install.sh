@@ -20,14 +20,16 @@ if ! command -v python3.9 &> /dev/null; then
     sudo apt-get install -y python3.9
 fi
 
-echo "Проверяем и устанавливаем pip для python3.9 и Ansible"
+echo "Проверяем и устанавливаем pip для python3.9"
 if ! command -v pip3.9 &> /dev/null; then
     echo "Pip для Python 3.9 не установлен. Установка..."
     alias python3=python3.9
     sudo apt-get install python3-pip
 fi
-python3.9 -m pip install --user ansible-core==2.14.6
 
+echo "Устанавливаем Ansible 2.14.6"
+python3.9 -m pip install --user ansible-core==2.14.6
+python3 -m pip install --user ansible
 
 echo "Проверяем и устанавливаем дополнительные утилиты, для успешного развертывания kubespray"
 if ! command -v jq &> /dev/null; then
