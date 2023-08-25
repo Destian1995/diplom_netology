@@ -60,7 +60,7 @@ if ! command -v terraform &> /dev/null; then
 fi
 
 echo "установка Helm"
-snap install helm --classic
+sudo snap install helm --classic
 
 echo "---------------------------------------------------------------"
 echo "Окружение готово, приступаем к развертыванию"
