@@ -44,7 +44,7 @@ if ! command -v jmespath &> /dev/null; then
 fi
 if ! command -v kubectl &> /dev/null; then
     echo "kubectl не установлена. Установка..."
-    sudo apt update && sudo snap install kubectl
+    sudo apt update && sudo snap install kubectl --classic
 fi
 
 echo "Проверяем наличие Terraform и устанавливаем его при необходимости"
