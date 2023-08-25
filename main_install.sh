@@ -27,9 +27,6 @@ if ! command -v pip3.9 &> /dev/null; then
     sudo apt-get install python3-pip
 fi
 echo "Устанавливаем Ansible 2.14.6"
-
-python3.9 -m pip install --user ansible-core==2.14.6
-python3.9 -m pip install --user ansible
 python3.9 -m pip install --user ansible-core==2.14.6
 export PATH="$PATH:/home/vagrant/.local/bin"
 
