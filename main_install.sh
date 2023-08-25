@@ -55,6 +55,7 @@ if ! command -v terraform &> /dev/null; then
     sudo snap install terraform --classic
 fi
 
+echo "---------------------------------------------------------------"
 echo "Окружение готово, приступаем к развертыванию"
 
 cd terraform
@@ -72,6 +73,7 @@ terraform output -json external_ip_address_vm_instance_master | jq -r '.[]' > ..
 terraform output -json external_ip_address_vm_instance_jenkins | jq -r '.[]' > ../inv2
 export IP_MASTER=$(terraform output -json external_ip_address_vm_instance_master | jq -r '.[]')
 
+echo "---------------------------------------------------------------"
 echo "Ждем пока инфраструктура оживет..."
 sleep 120
 
