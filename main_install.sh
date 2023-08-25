@@ -5,13 +5,13 @@
 
 set -e
 
-# Скачиваем репозиторий kubespray, если его нет, для дальнейшего развертывания.
+echo "Скачиваем репозиторий kubespray, если его нет, для дальнейшего развертывания."
 if [ ! -d "kubespray" ]; then
     echo "Репозиторий kubespray не найден. Скачиваем..."
     git clone https://github.com/kubernetes-sigs/kubespray.git
 fi
 
-# Проверяем и устанавливаем python 3.9
+echo "Проверяем и устанавливаем python 3.9"
 if ! command -v python3.9 &> /dev/null; then
     echo "Python 3.9 не установлен. Установка..."
     sudo apt update
@@ -20,7 +20,7 @@ if ! command -v python3.9 &> /dev/null; then
     sudo apt-get install -y python3.9
 fi
 
-# Проверяем и устанавливаем pip для python3.9 и Ansible
+echo "Проверяем и устанавливаем pip для python3.9 и Ansible"
 if ! command -v pip3.9 &> /dev/null; then
     echo "Pip для Python 3.9 не установлен. Установка..."
     sudo apt-get install -y python3.9-pip
@@ -28,7 +28,7 @@ fi
 python3.9 -m pip install --user ansible-core==2.14.6
 
 
-# Проверяем и устанавливаем дополнительные утилиты, для успешного развертывания kubespray
+echo "Проверяем и устанавливаем дополнительные утилиты, для успешного развертывания kubespray"
 if ! command -v jq &> /dev/null; then
     echo "JQ не установлен. Установка..."
     sudo apt install -y jq
@@ -46,7 +46,7 @@ if ! command -v kubectl &> /dev/null; then
     sudo apt-get update && sudo apt-get install -y kubectl
 fi
 
-# Проверяем наличие Terraform и устанавливаем его при необходимости
+echo "Проверяем наличие Terraform и устанавливаем его при необходимости"
 if ! command -v terraform &> /dev/null; then
     echo "Terraform не установлен. Установка..."
     sudo snap install terraform --classic
