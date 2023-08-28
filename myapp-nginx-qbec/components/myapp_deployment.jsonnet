@@ -9,26 +9,26 @@ local params = p.components.myapp_deployment;
     "metadata": {
         "name": "myapp-nginx",
         "labels": {
-        "app.kubernetes.io/name": "myapp-nginx"
+        "app.kubernetes.io/name": "nginx-app"
         }
     },
     "spec": {
         "replicas": params.replicas,
         "selector": {
         "matchLabels": {
-            "app.kubernetes.io/name": "myapp-nginx"
+            "app.kubernetes.io/name": "nginx-app"
         }
         },
         "template": {
         "metadata": {
             "labels": {
-            "app.kubernetes.io/name": "myapp-nginx"
+            "app.kubernetes.io/name": "nginx-app"
             }
         },
         "spec": {
             "containers": [
             {
-                "name": "myapp-nginx",
+                "name": "nginx-app",
                 "image": params.rep + '/' + params.tag,
                 "resources": {
                 "requests": {
