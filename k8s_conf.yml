@@ -1,36 +1,35 @@
----
-- name: create dir for config
+- name: Prepare Kubernetes Configuration
   hosts: localhost
   vars:
     workspace: "{{ lookup('env','WORKSPACE') }}"
+    ip_master: "{{ lookup('env','IP_MASTER') }}"
   tasks:
-  - name: create dir for config
-    ansible.builtin.file:
-      path: ~/.kube/"{{ workspace }}"
-      state: directory
-      mode: '0755'
+    - name: Create directory for config
+      ansible.builtin.file:
+        path: "~/.kube/{{ workspace }}"
+        state: directory
+        mode: '0755'
 
-- name: get conf
+- name: Fetch Kubernetes Configuration
   hosts: all
   vars:
     workspace: "{{ lookup('env','WORKSPACE') }}"
   become: true
   tasks:
-  - name: get conf
-    ansible.builtin.fetch:
-      src: /etc/kubernetes/admin.conf
-      dest: ~/.kube/{{ workspace }}/config
-      flat: yes
+    - name: Fetch configuration
+      ansible.builtin.fetch:
+        src: /etc/kubernetes/admin.conf
+        dest: "~/.kube/{{ workspace }}/config"
+        flat: yes
 
-- name: change local kube config
+- name: Modify Local Kubernetes Config
   hosts: localhost
   vars:
-    ip: "{{ lookup('env','IP_MASTER') }}"
     workspace: "{{ lookup('env','WORKSPACE') }}"
+    ip: "{{ ip_master }}"
   tasks:
-  - name: change local kube config
-    replace:
-      path: ~/.kube/{{ workspace }}/config
-      regexp: '127.0.0.1'
-      replace: "{{ ip }}"
-
+    - name: Change IP in kube config
+      ansible.builtin.lineinfile:
+        path: "~/.kube/{{ workspace }}/config"
+        regexp: '^(\s*server:\s*)https?://[^:]+(:\d+)?'
+        line: "\\1https://{{ ip }}\\2"
