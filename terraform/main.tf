@@ -1,3 +1,4 @@
+
 resource "yandex_compute_instance" "master" {
   name = "master-${format(var.count_format, var.count_offset+count.index+1)}"
   zone = local.zone[terraform.workspace]
