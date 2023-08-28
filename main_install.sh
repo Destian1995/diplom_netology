@@ -6,9 +6,7 @@
 set -e
 
 echo "Добавление ключа ssh"
-cd 
-cd .ssh
-cp id_rsa.pub /home/vagrant/diplom_netology/terraform
+(cd ~/.ssh && cp id_rsa.pub /home/vagrant/diplom_netology/terraform && cd ~ && cd diplom_netology)
 
 echo "Скачиваем репозиторий kubespray, если его нет, для дальнейшего развертывания."
 if [ ! -d "kubespray" ]; then
